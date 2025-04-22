@@ -42,8 +42,8 @@ struct GoalWriteView: View {
     var body: some View {
         
         VStack(spacing: 0) {
-            
-            // Top
+//            
+//            // Top
             TopWriteView(dismissAction: {
                 isPresented = false
             })
@@ -82,7 +82,7 @@ struct GoalWriteView: View {
                 )
                 context.insert(newGoal)
                 isPresented = false     // 작성 뷰 닫기
-                print("저장된 목표: \(newGoal.title)")
+//                print("저장된 목표: \(newGoal.title)")
             }) {
                 Text("등록하기")
                     .foregroundColor(.white)
@@ -99,7 +99,7 @@ struct GoalWriteView: View {
             hideKeyboard()
         }
         
-        
+//        Text("dm")
     }
     
 }

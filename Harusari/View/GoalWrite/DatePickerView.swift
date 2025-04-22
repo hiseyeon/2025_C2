@@ -27,7 +27,6 @@ struct DatePickerView: View {
                                     activePicker = (activePicker == .start) ? nil : .start
                                 }
                             }
-                            
                             Divider()
                                 .frame(height: 1)
                                 .background(Color.gray2)
@@ -45,13 +44,15 @@ struct DatePickerView: View {
                         
                         if activePicker == .start {
                             DatePicker("", selection: $startDate, displayedComponents: [.date])
-                                .datePickerStyle(.graphical)
+//                                .datePickerStyle(.graphical)
+                                .datePickerStyle(.compact)
                                 .padding(.vertical)
                         }
                         
                         if activePicker == .end {
                             DatePicker("", selection: $endDate, displayedComponents: [.date])
-                                .datePickerStyle(.graphical)
+//                                .datePickerStyle(.graphical)
+                                .datePickerStyle(.compact)
                                 .padding(.vertical)
                         }
                     }

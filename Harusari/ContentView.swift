@@ -18,9 +18,9 @@ struct ContentView: View {
                 Text("📌 \(goal.title)")
             }
         }
-        .onAppear {
-            print("📋 전체 Goal 수: \(allGoals.count)")
-        }
+//        .onAppear {
+//            print("📋 전체 Goal 수: \(allGoals.count)")
+//        }
     }
 }
 

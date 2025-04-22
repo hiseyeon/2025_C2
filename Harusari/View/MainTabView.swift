@@ -78,12 +78,18 @@ struct MainTabView: View {
             .onChange(of: selectedTab) {
                 if selectedTab == 1 {
                     showWriteView = true
-                    selectedTab = 0
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        selectedTab = 0
+                    }
+                    
                 }
             }
             .fullScreenCover(isPresented: $showWriteView) {
                 GoalWriteView(isPresented: $showWriteView)
             }
+//            .sheet(isPresented: $showWriteView) {
+//                GoalWriteView(isPresented: $showWriteView)
+//            }
         }
     }
 }

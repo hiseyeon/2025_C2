@@ -15,7 +15,7 @@ struct GoalCardView: View {
     
     var body: some View {
 //        NavigationStack{
-            NavigationLink(value: goal) {
+//            NavigationLink(value: goal) {
                 
                 VStack(alignment: .leading) {
                     Text(goal.title)
@@ -49,27 +49,7 @@ struct GoalCardView: View {
                             .padding(.trailing, 12),
                         alignment: .trailing
                     )
-//                    ZStack(alignment: .leading) {
-//                        RoundedRectangle(cornerRadius: 100)
-//                            .fill(Color.gray1)
-//                            .frame(height: 27)
-//                        
-//                        RoundedRectangle(cornerRadius: 100)
-//                            .fill(Color.black0)
-//                            .frame(width: progressBarWidth, height: 27)
-//                    }
-//                    .overlay(
-////                        Text("\(Int(goal.progress * 100))%")
-//                        Text("\(Int(progress * 100))%")
-//                        .foregroundColor(.pink3)
-//                            .font(.subheadline)
-//                            .padding(.trailing, 12),
-//                        alignment: .trailing
-//                    )
                 }
-                //            .padding(.horizontal, 16)
-                //            .padding(.vertical, 6)
-            }
             .padding(.vertical, 22)
             .padding(.horizontal, 16)
             .background(

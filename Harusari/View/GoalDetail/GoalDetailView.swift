@@ -13,7 +13,7 @@ struct GoalDetailView: View {
     
     let goal: Goal
     
-    @State private var isEditing = false
+    @Binding var isEditing: Bool
     @State private var editedTitle: String
     @State private var editedMemo: String = ""
     @State private var editedStartDate: Date
@@ -21,14 +21,13 @@ struct GoalDetailView: View {
     
     @State private var weeklyPlans: [String] = []
     
-    init(goal: Goal) {
+    init(goal: Goal, isEditing: Binding<Bool>) {
         self.goal = goal
+        self._isEditing = isEditing
         _editedTitle = State(initialValue: goal.title)
         _editedMemo = State(initialValue: goal.memo ?? "")
         _editedStartDate = State(initialValue: goal.startDate)
         _editedEndDate = State(initialValue: goal.endDate)
-        
-        print("🔵 GoalDetailView init 호출됨: \(goal.title)")
     }
     private var progress: Double {
         let total = goal.weeklyPlans.count
@@ -38,43 +37,8 @@ struct GoalDetailView: View {
     }
     
     var body: some View {
-////        ScrollView {
-//            VStack(alignment: .leading, spacing: 24) {
         List {
             VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isEditing.toggle()
-                    }) {
-                        Text(isEditing ? "완료" : "편집")
-                            .fontWeight(.semibold)
-                    }
-                }
-                
-//                // 달성률
-//                VStack(alignment: .leading, spacing: 8) {
-//                    Text("달성률")
-//                        .fontWeight(.semibold)
-//                        .padding(.top, 32)
-//                    
-//                    ZStack(alignment: .leading) {
-//                        RoundedRectangle(cornerRadius: 100)
-//                            .fill(Color.gray1)
-//                            .frame(height: 27)
-//                        
-//                        RoundedRectangle(cornerRadius: 100)
-//                            .fill(Color.black0)
-//                            .frame(width: progressBarWidth, height: 27)
-//                    }
-//                    .overlay(
-//                        Text("\(Int(goal.progress * 100))%")
-//                            .foregroundColor(.pink3)
-//                            .font(.subheadline)
-//                            .padding(.trailing, 12),
-//                        alignment: .trailing
-//                    )
-                
                 Text("달성률")
                     .fontWeight(.semibold)
                     .padding(.top, 8)
@@ -91,15 +55,6 @@ struct GoalDetailView: View {
                     }
                     .frame(height: 27) // 고정 높이 지정
                 }
-                
-                // 제목
-//                .overlay(
-//                    Text("\(Int(goal.progress * 100))%")
-//                        .foregroundColor(.pink3)
-//                        .font(.subheadline)
-//                        .padding(.trailing, 12),
-//                    alignment: .trailing
-//                )
                 .overlay(
                     Text("\(Int(progress * 100))%")
                         .foregroundColor(.pink3)
@@ -108,10 +63,13 @@ struct GoalDetailView: View {
                     alignment: .trailing
                 )
             }
+            .padding(.bottom, 32)
             .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
 
             VStack(alignment: .leading, spacing: 16) {
                 EditableBox(title: "제목", content: $editedTitle, isEditing: isEditing)
+                    .padding(.bottom, 32)
                 
                 // 기간
                 if isEditing {
@@ -131,70 +89,16 @@ struct GoalDetailView: View {
                 
                 // 메모
                 EditableBox(title: "메모", content: $editedMemo, isEditing: isEditing, isMemo: true)
-                
-////                ForEach(weeklyPlans.indices, id: \.self) { index in
-//                ForEach(goal.weeklyPlans.sorted(by: { $0.week < $1.week })) { plan in
-//                    VStack(alignment: .leading, spacing: 6) {
-////                        Text("\(index + 1)주차")
-//                        Text("\(plan.week)주차")
-//                            .foregroundColor(.gray)
-//                            .fontWeight(.semibold)
-//
-//                        HStack {
-////                            TextField("\(index + 1)주차 계획을 입력하세요", text: $weeklyPlans[index], axis: .vertical)
-////                                .padding(12)
-////                                .background(
-////                                    RoundedRectangle(cornerRadius: 8)
-////                                        .stroke(Color.gray2)
-////                                )
-//                            TextField("\(plan.week)주차 계획을 입력하세요", text: Binding(
-//                                get: { plan.content },
-//                                set: { plan.content = $0 }
-//                            ), axis: .vertical)
-//                            .padding(12)
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 8)
-//                                    .stroke(Color.gray2)
-//                            )
-//                            Button(action: {
-//                                // 체크 토글용 추후 로직
-//                                plan.isChecked.toggle()
-//                            }) {
-//                                Image(systemName: "checkmark.circle")
-//                                    .foregroundColor(.pink3)
-                
-//                List {
-//                    ForEach(goal.weeklyPlans.sorted(by: { $0.week < $1.week })) { plan in
-//                        VStack(alignment: .leading, spacing: 6) {
-//                            Text("\(plan.week)주차")
-//                                .foregroundColor(.gray)
-//                                .fontWeight(.semibold)
+                    .padding(.vertical, 32)
             }
             .listRowInsets(EdgeInsets())
-
-//                            HStack {
-//                                TextField("\(plan.week)주차 계획을 입력하세요", text: Binding(
-//                                    get: { plan.content },
-//                                    set: { plan.content = $0 }
-//                                ), axis: .vertical)
-//                                .padding(12)
-//                                .background(
-//                                    RoundedRectangle(cornerRadius: 8)
-//                                        .stroke(Color.gray2)
-//                                )
-//                                Button(action: {
-//                                    plan.isChecked.toggle()
-//                                }) {
-//                                    Image(systemName: plan.isChecked ? "checkmark.circle.fill" : "checkmark.circle")
-//                                        .foregroundColor(.pink3)
-//                                }
-//                            }
             
             ForEach(goal.weeklyPlans.sorted(by: { $0.week < $1.week })) { plan in
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text("\(plan.week)주차")
-                        .foregroundColor(.gray)
+                        .foregroundColor(.black)
                         .fontWeight(.semibold)
+                        .padding(.vertical, 12)
 
                     HStack {
                         TextField("\(plan.week)주차 계획을 입력하세요", text: Binding(
@@ -212,14 +116,7 @@ struct GoalDetailView: View {
                             Image(systemName: plan.isChecked ? "checkmark.circle.fill" : "checkmark.circle")
                                 .foregroundColor(.pink3)
                         }
-//                        .swipeActions {
-//                            Button(role: .destructive) {
-//                                if let index = goal.weeklyPlans.firstIndex(where: { $0.id == plan.id }) {
-//                                    goal.weeklyPlans.remove(at: index)
-//                                }
-//                            } label: {
-//                                Label("삭제", systemImage: "trash")
-//                            }
+                        .buttonStyle(.plain)
                     }
                 }
                 .swipeActions {
@@ -235,12 +132,11 @@ struct GoalDetailView: View {
 //                .listStyle(.plain)
 
                 .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
             }
 
             VStack {
                 Button(action: {
-                    // 주간 계획 추가하기 로직
-//                    weeklyPlans.append("")
                     let newWeek = (goal.weeklyPlans.map { $0.week }.max() ?? 0) + 1
                     let newPlan = WeeklyPlan(week: newWeek, content: "", isChecked: false, goal: goal)
                     goal.weeklyPlans.append(newPlan)
@@ -256,25 +152,22 @@ struct GoalDetailView: View {
                     .background(Color.black0)
                     .cornerRadius(12)
                 }
+                .padding(.top, 32)
+                .buttonStyle(.plain)
                 
 //                Spacer()
             }
 //            .padding(.horizontal, 16)
 //        }
+            .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
         }
-        .onAppear {
-            print("🟣 GoalDetailView onAppear: \(goal.title)")
-        }
+        .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
         .listStyle(.plain)
-        .padding(.horizontal, 16)
+//        .padding(.horizontal, 16)
     }
-        
-//        private func formatted(_ date: Date) -> String {
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy.MM.dd"
-//            return formatter.string(from: date)
-//        }
+    
     
     private func formatted(_ date: Date) -> String {
         let formatter = DateFormatter()
@@ -358,6 +251,7 @@ struct EditableBox: View {
         endDate: Calendar.current.date(byAdding: .day, value: 30, to: Date())!,
         progress: 0.5,
         memo: "정처기 필기 시험 준비 중"
-    ))
+//    ))
+    ), isEditing: .constant(false))
 }
 
