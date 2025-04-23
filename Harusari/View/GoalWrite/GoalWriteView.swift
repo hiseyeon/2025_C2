@@ -11,6 +11,7 @@ import SwiftUI
 
 struct StatefulPreviewWrapper<Value>: View {
     @State private var value: Value
+    
     var content: (Binding<Value>) -> AnyView
     
     init(_ initialValue: Value, @ViewBuilder content: @escaping (Binding<Value>) -> some View) {
@@ -99,7 +100,6 @@ struct GoalWriteView: View {
             hideKeyboard()
         }
         
-//        Text("dm")
     }
     
 }

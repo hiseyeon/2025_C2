@@ -15,7 +15,7 @@ struct GoalEmptyView: View {
         VStack {
 //            TopTabView(selectedFilter: $selectedFilter)
             
-            Text("깡통 . . . ")
+            Text("엥 . . . ?")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(Color.black)

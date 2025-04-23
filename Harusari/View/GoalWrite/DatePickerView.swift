@@ -44,16 +44,21 @@ struct DatePickerView: View {
                         
                         if activePicker == .start {
                             DatePicker("", selection: $startDate, displayedComponents: [.date])
-//                                .datePickerStyle(.graphical)
-                                .datePickerStyle(.compact)
-                                .padding(.vertical)
+                                .datePickerStyle(.graphical)
+//                                .datePickerStyle(.compact)
+//                                .padding(.vertical)
                         }
-                        
+
                         if activePicker == .end {
                             DatePicker("", selection: $endDate, displayedComponents: [.date])
-//                                .datePickerStyle(.graphical)
-                                .datePickerStyle(.compact)
+                                .datePickerStyle(.graphical)
+//                                .datePickerStyle(.compact)
                                 .padding(.vertical)
+                                .onChange(of: endDate) {
+                                    if endDate < startDate {
+                                        endDate = startDate
+                                    }
+                                }
                         }
                     }
                     .padding(.vertical)

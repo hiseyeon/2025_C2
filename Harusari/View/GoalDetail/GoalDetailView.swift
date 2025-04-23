@@ -36,11 +36,15 @@ struct GoalDetailView: View {
         return Double(completed) / Double(total)
     }
     
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
+
+
     var body: some View {
         List {
             VStack(alignment: .leading, spacing: 16) {
                 Text("달성률")
-                    .fontWeight(.semibold)
+                    .font(.system(size: 16, weight: .semibold))
                     .padding(.top, 8)
 
                 ZStack(alignment: .leading) {
@@ -75,8 +79,7 @@ struct GoalDetailView: View {
                 if isEditing {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("기간")
-                            .foregroundColor(.gray)
-                            .fontWeight(.semibold)
+                            .font(.system(size: 16, weight: .semibold))
                         DatePicker("시작일", selection: $editedStartDate, displayedComponents: .date)
                         DatePicker("종료일", selection: $editedEndDate, displayedComponents: .date)
                     }
@@ -114,6 +117,9 @@ struct GoalDetailView: View {
                             plan.isChecked.toggle()
                         }) {
                             Image(systemName: plan.isChecked ? "checkmark.circle.fill" : "checkmark.circle")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
                                 .foregroundColor(.pink3)
                         }
                         .buttonStyle(.plain)
@@ -165,7 +171,7 @@ struct GoalDetailView: View {
         .listRowInsets(EdgeInsets())
         .listRowSeparator(.hidden)
         .listStyle(.plain)
-//        .padding(.horizontal, 16)
+        .padding(.horizontal, 16)
     }
     
     
@@ -190,8 +196,7 @@ struct LabeledBox: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .foregroundColor(.gray)
-                .fontWeight(.semibold)
+                .font(.system(size: 16, weight: .semibold))
 
             Text(content)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -215,12 +220,12 @@ struct EditableBox: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .foregroundColor(.gray)
-                .fontWeight(.semibold)
+                .font(.system(size: 16, weight: .semibold))
 
             if isEditing {
                 if isMemo {
                     TextEditor(text: $content)
+                        .font(.system(size: 16, weight: .semibold))
                         .frame(minHeight: 100)
                         .padding(8)
                         .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray2))

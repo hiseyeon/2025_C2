@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentWriteView: View {
     
     @Binding var memo: String
+    @FocusState private var editCommentFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -28,6 +29,7 @@ struct ContentWriteView: View {
                 }
                 
                 TextEditor(text: $memo)
+                    .focused(self.$editCommentFocused)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 18)
                     .frame(minHeight: 164)

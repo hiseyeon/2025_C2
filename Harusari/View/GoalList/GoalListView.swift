@@ -47,12 +47,14 @@ struct GoalListView: View {
                                 
 //           MARK: NavigationLink 여기
 //                                NavigationLink(value: goal) {
-                                ForEach(filteredGoals) { goal in
+//                                ForEach(filteredGoals) { goal in
                                     NavigationLink(value: goal) {
                                         GoalCardView(goal: goal)
-                                            .buttonStyle(.plain)
+//                                            .buttonStyle(.plain)
                                     }
+                                    .buttonStyle(PlainButtonStyle())
                                     .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
                                     .swipeActions {
                                         Button {
                                             goal.isTrashed = true
@@ -68,7 +70,7 @@ struct GoalListView: View {
                                     }
                             }
                         }
-                    }
+//                    }
                     .listStyle(.plain)
                     
                     .navigationDestination(for: Goal.self) { goal in
@@ -78,7 +80,7 @@ struct GoalListView: View {
                                     GoalDetailToolbar(isEditing: $isEditing)
                                 }
                             }
-//                            .navigationTitle("상세보기")
+                            .navigationTitle("상세보기")
 //                            .toolbar(.hidden, for: .tabBar)
                     }
                 }
